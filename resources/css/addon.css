@@ -1,0 +1,7 @@
+.bard-fieldtype .bard-content {
+    & ruby {
+        & rt {
+            opacity: 0.5;
+        }
+    }   
+}

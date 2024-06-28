@@ -1,0 +1,37 @@
+{
+    "name": "textandbytes/statamic-rubytext",
+    "autoload": {
+        "psr-4": {
+            "Textandbytes\\StatamicRubytext\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Textandbytes\\StatamicRubytext\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "statamic/cms": "^5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Ruby Text",
+            "description": "Adds a ruby text button to the Bard fieldtype in Statamic/"
+        },
+        "laravel": {
+            "providers": [
+                "Textandbytes\\StatamicRubytext\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
