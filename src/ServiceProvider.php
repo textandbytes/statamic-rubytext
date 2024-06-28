@@ -18,8 +18,13 @@ class ServiceProvider extends AddonServiceProvider
     public function bootAddon()
     {
         Augmentor::addExtension('ruby', new Extensions\Ruby());
-        Augmentor::addExtension('rubyText', new Extensions\RubyText());
 
+        /*
+        * The extra rubyText node extension and augmentation hook are needed
+        * because rendering multiple nested tags from a single mark doesn't
+        * work in tiptap-php. See comment in Transformer for more info.
+        */
+        Augmentor::addExtension('rubyText', new Extensions\RubyText());
         Bard::hook('augment', function ($value, $next) {
             return $next(Transformer::transform($value));
         });
