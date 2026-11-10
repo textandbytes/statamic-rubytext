@@ -1,38 +1,36 @@
 <template>
-
     <div class="bard-link-toolbar">
-
-        <div class="px-4 py-4 border-b dark:border-dark-900">
-            <div class="h-8 p-2 bg-gray-100 dark:bg-dark-600 text-gray-800 dark:text-dark-150 w-full border dark:border-dark-200 rounded shadow-inner placeholder:text-gray-600 dark:placeholder:dark-text-dark-175 flex items-center">
-                <input
-                    v-model="text"
-                    type="text"
-                    ref="textInput"
-                    class="input h-auto text-sm"
-                    :placeholder="__('Enter ruby text…')"
-                    @keydown.enter.prevent="commit"
-                />
-            </div>
+        <div class="p-4">
+            <Input
+                ref="textInput"
+                v-model="text"
+                type="text"
+                size="sm"
+                :placeholder="__('Enter ruby text…')"
+                @keydown.enter.prevent="commit"
+            />
         </div>
 
-        <footer class="bg-gray-100 dark:bg-dark-575 rounded-b-md flex items-center justify-end space-x-3 font-normal p-2">
-            <button @click="$emit('canceled')" class="text-xs text-gray-600 dark:text-dark-175 hover:text-gray-800 dark:hover-text-dark-100">
+        <footer class="flex items-center justify-end gap-2 border-t p-2">
+            <Button size="sm" @click="$emit('canceled')">
                 {{ __('Cancel') }}
-            </button>
-            <button @click="remove" class="btn btn-sm">
+            </Button>
+            <Button size="sm" @click="remove">
                 {{ __('Remove') }}
-            </button>
-            <button @click="commit" class="btn btn-sm">
+            </Button>
+            <Button size="sm" variant="primary" @click="commit">
                 {{ __('Apply') }}
-            </button>
+            </Button>
         </footer>
-
     </div>
-
 </template>
 
 <script>
+import { Button, Input } from '@statamic/cms/ui';
+
 export default {
+
+    components: { Button, Input },
 
     props: {
         bard: {},
@@ -42,32 +40,36 @@ export default {
     data() {
         return {
             text: null,
+            rubySelectedHandler: null,
+            rubyDeselectedHandler: null,
         }
     },
 
     created() {
         this.applyAttrs(this.markAttrs);
-        this.bard.$on('ruby-selected', this.applyAttrs);
-        this.bard.$on('ruby-deselected', () => this.$emit('deselected'));
+        this.rubySelectedHandler = attrs => this.applyAttrs(attrs);
+        this.rubyDeselectedHandler = () => this.$emit('deselected');
+        this.bard.events.on('ruby-selected', this.rubySelectedHandler);
+        this.bard.events.on('ruby-deselected', this.rubyDeselectedHandler);
     },
 
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
-                this.$refs.textInput.focus();
+                this.$refs.textInput?.focus();
             }, 50);
         });
     },
 
-    beforeDestroy() {
-        this.bard.$off('ruby-selected');
-        this.bard.$off('ruby-deselected');
+    beforeUnmount() {
+        this.bard.events.off('ruby-selected', this.rubySelectedHandler);
+        this.bard.events.off('ruby-deselected', this.rubyDeselectedHandler);
     },
 
     methods: {
 
         applyAttrs(markAttrs) {
-            this.text = markAttrs.text;
+            this.text = markAttrs?.text ?? null;
         },
 
         remove() {

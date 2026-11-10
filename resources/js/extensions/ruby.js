@@ -1,7 +1,4 @@
-const { Mark, getMarkRange, getAttributes } = Statamic.$bard.tiptap.core;
-const { Plugin, PluginKey, TextSelection } = Statamic.$bard.tiptap.pm.state;
-
-const Ruby = Mark.create({
+const Ruby = ({ core: { Mark, getMarkRange, getAttributes }, pm: { state: { Plugin, PluginKey, TextSelection } } }) => Mark.create({
 
     name: 'ruby',
 
@@ -50,7 +47,7 @@ const Ruby = Mark.create({
         const bard = this.options.bard;
         return [
             new Plugin({
-                key: new PluginKey('eventHandler'),
+                key: new PluginKey('rubyEventHandler'),
                 props: {
                     handleClick(view, pos) {
                         const { schema, doc, tr } = view.state;
@@ -66,9 +63,9 @@ const Ruby = Mark.create({
                             const attrs = getAttributes(view.state, schema.marks.ruby);
 
                             view.dispatch(transaction);
-                            bard.$emit('ruby-selected', attrs);
+                            bard.events.emit('ruby-selected', attrs);
                         } else {
-                            bard.$emit('ruby-deselected');
+                            bard.events.emit('ruby-deselected');
                         }
                     },
                 },

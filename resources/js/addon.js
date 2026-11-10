@@ -7,7 +7,7 @@ Statamic.booting(() => {
     
     Statamic.$components.register('ruby-button', RubyButton);
 
-    Statamic.$bard.addExtension(({ bard }) => Ruby.configure({ bard }));
+    Statamic.$bard.addExtension(({ bard, tiptap }) => Ruby(tiptap).configure({ bard }));
     
     Statamic.$bard.buttons((buttons, button) => {
         buttons.splice(buttons.indexOf('ruby'), 0, button({

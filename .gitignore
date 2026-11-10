@@ -2,3 +2,5 @@ node_modules
 vendor
 mix-manifest.json
 hot
+.phpunit.cache
+.phpunit.result.cache
