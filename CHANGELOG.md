@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 (Unreleased)
+## 0.2.0 (2026-11-10)
 
 - Require Statamic 6 and PHP 8.3 or newer. Statamic 5 sites should stay on 0.1.x.
 - Migrate the Bard extension, toolbar, popover, and event listeners to Statamic 6 and Vue 3.
